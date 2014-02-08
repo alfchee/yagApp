@@ -1,0 +1,16 @@
+/*******************
+    HTML Tags
+********************/
+figure {
+    margin: 0;
+}
+
+
+/*******************
+    ID's
+********************/
+#home-content,
+#closetome-content,
+#showplace-content {
+    padding-top: 0;
+}
