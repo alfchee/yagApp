@@ -1,4 +1,6 @@
 // sets the requirejs
+'use strict';
+
 require.config({
     // 3rd party scripts
     paths: {
