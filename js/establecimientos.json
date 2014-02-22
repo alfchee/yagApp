@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "52eac9e3468c3d530c000000",
+    "nombre": "El Gran Café",
+    "direccion": "Claro 1 1/2 c al Este",
+    "negocio": "52eac7b6468c3d450c000000",
+    "ciudad": "52cb82e6468c3d7d02000000",
+    "coordinates": {
+      "x": 12.927916,
+      "y": -85.915966
+    },
+    "telefonos": []
+  }
+]
