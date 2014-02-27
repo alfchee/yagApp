@@ -2,29 +2,29 @@ define([
     'underscore',
     'backbone',
     'models/EstablecimientoModel'
-],function(_, Backbone, EstablecimientoModel){
-       
+],function(_, Backbone, EstablecimientoModel) {
+    'use strict';
+
     var EstablecimientoCollection = Backbone.Collection.extend({
         model: EstablecimientoModel,
-        
+
         initialize: function(models, options) {
-            console.log("Establecimiento initialize");
+            console.log('EstablecimientoCollection init');
         },
-    
+
         url: function() {
-            //return '../js/establecimientos.json';  
-            return 'http://localhost:3000/establecimiento';
+            return 'http://localhost:3000/establecimiento'
         },
 
         sync: function(method, collection, options) {
-            options.dataType= 'jsonp';
-            return Backbone.sync(method,collection,options);
+            options.dataType = 'jsonp';
+            return Backbone.sync(method, collection, options);
         },
-            
+
         parse: function(response) {
-            console.log("End of loading data " + JSON.stringify(response) + " datos");
-            return response;   
-        },
+            console.log('Parsing ' + JSON.stringify(response) + ' data');
+            return response;
+        }
     });
 
     return EstablecimientoCollection;

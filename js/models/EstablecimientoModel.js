@@ -1,13 +1,15 @@
 define([
     'underscore',
     'backbone'
-],function(_, Backbone) {
-    
+], function(_, Backbone) {
+    'use strict';
+
     var EstablecimientoModel = Backbone.Model.extend({
         default: {
-        	nombre: ''
+            nombre: '',
+            direccion: ''
         }
     });
-    
+
     return EstablecimientoModel;
 });
