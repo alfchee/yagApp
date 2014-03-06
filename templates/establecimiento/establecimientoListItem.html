@@ -1,6 +1,8 @@
 
-<a href="#est/<%= _id %>">
-    <img src="#" alt="Foto" />
-    <h4><%= nombre %></h4>
-    <p><%= direccion %></p>
+<a href="#est/<%= obj._id %>">
+    <img class="img-list-item" src="http://placehold.it/80x80" alt="Foto" class="img-responsive" />
+    <div class="list-body">
+    	<h4 class="list-group-item-heading"><%= obj.nombre %></h4>
+    	<p class="list-group-item-text"><%= obj.direccion %></p>
+    </div>
 </a>

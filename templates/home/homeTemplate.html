@@ -1,38 +1,44 @@
 <!-- Page #2 Left Panel of Options -->
-<div data-role="panel" id="config-1" data-positon="left" data-display="overlay">
-    <!-- Header of Panel -->
-    <div class="panel-content">
-        <h4>Configuración</h4>
-    </div>
+<div data-role="panel" id="config-1">
     
 </div>
 <!-- End of Left Panel of Options  -->
-<!-- Header -->
-<div data-role="header" class="ui-header">
-    <a href="#config-1" data-rel="dialog" data-icon="gear" data-iconpos="notext" class="ui-btn-left">Configuration</a>
-    <h1></h1>
-</div>
-<div data-role="content" class="ui-content" id="home-content">
+
+<div id="home-content">
     <!-- The carousel  -->
-    <figure>
-        <img src="js/holder.js/284x200" alt="Carousel" height="200px" width="100%" />
+    <figure id="carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="active item">
+                <img src="http://placehold.it/1920x600" alt="Carousel"/>
+            </div>
+        </div>
+        <a href="#" class="right carousel-control" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+        <a href="#" class="left carousel-control" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
     </figure>
     <!-- End of the Carousel  -->
     
-    <div data-role="navbar">
-        <ul>
-            <li><a href="#nearMe" data-icon="location">Cerca de mi</a></li>
-            <li><a href="#list-places" data-icon="search">Buscar</a></li>
-        </ul>
-        <ul>
-            <li><a href="#" data-icon="plus">Emergencia</a></li>
-            <li><a href="#" data-icon="info">Información Turística</a></li>
-        </ul>
-        <ul>
-            <li><a href="#" data-icon="bullets">Restaurantes</a></li>
-            <li><a href="#" data-icon="bullets">Hoteles</a></li>
-        </ul>
+    <div class="container">
+        <div class="row">
+             <div class="btn-group btn-group-lg btn-group-justified">
+                <a href="#nearMe" class="btn btn-default" role="button">Cerca de mí</a>
+                <a href="#" class="btn btn-default" role="button">Buscar</a>
+            </div>
+            <div class="btn-group btn-group-lg btn-group-justified">
+                <a href="#" class="btn btn-default" role="button">Emergencia</a>
+                <a href="#" class="btn btn-default" role="button">Información Turística</a>
+            </div>
+            <div class="btn-group btn-group-lg btn-group-justified">
+                <a href="#" class="btn btn-default" role="button">Restaurantes</a>
+                <a href="#" class="btn btn-default" role="button">Hoteles</a>
+            </div>
+        </div>
     </div>
+
+    
     <div class="ui-grid-solo" id="accelerometer"></div>
     <div class="ui-grid-solo" id="position"></div>
 </div>

@@ -12,8 +12,8 @@ define([
             console.log('EstablecimientoCollection init');
         },
 
-        url: function() {
-            return 'http://localhost:3000/establecimiento'
+        url: function(coords) {
+            return  'http://localhost:3000/establecimientos';
         },
 
         sync: function(method, collection, options) {

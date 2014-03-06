@@ -3,13 +3,20 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'views/header/HeaderView',
     'views/home/homeView',
     'views/establecimiento/EstablecimientoView',
-    'collections/EstablecimientoCollection',
-    'jqm'
-], function($, _, Backbone, HomeView, EstablecimientoView, EstablecimientoCollection) {
+    'views/nearme/NearMeView',
+    'collections/EstablecimientoCollection'
+], function($, _, Backbone, HeaderView, HomeView, EstablecimientoView, NearMeView, EstablecimientoCollection) {
     'use strict';
     var Router = Backbone.Router.extend({
+
+        initialize: function() {
+            this.headerView = new HeaderView();
+            $('.header').html(this.headerView.render().el);
+        }, // initialize()
+
         //definition of routes
         routes: {
             '': 'showHome',
@@ -21,40 +28,20 @@ define([
             this.showHome();  
         },
         showHome: function(actions) {
-            var homeView = new HomeView();
-            homeView.render();
-            this.changePage(homeView);
+            if(!this.homeView) {
+                this.homeView = new HomeView();
+                this.homeView.render();
+            } else {
+                this.homeView.delegateEvents(); // delegate events when is recycled
+            }
+            $('#content').html(this.homeView.el);
         },
         nearMe: function(actions) {
-            var estColl = new EstablecimientoCollection();
-            var establecimientoView = new EstablecimientoView({ collection: estColl });
-            this.changePage(establecimientoView);
+            var establecimientoView = new NearMeView();
+            //establecimientoView.render();
         },
         init: true,
-        dataHandler: function(data) {
-            console.log(JSON.stringify(data));
-        },
-        changePage: function(view) {
-            //add the attribute data-role="page" for each view's div
-            $(view.el).attr('data-role','page');
-            view.render();
-            // append to the DOM
-            $('body').append($(view.el));
-            var transition = $.mobile.defaultPageTransition;
-            
-            if(this.firstPage) {
-                transition = 'none';
-                this.firstPage = false;
-            }
-
-            // remove page from DOM when it's being replaced
-            $('div[data-role="page"]').on('pagehide', function (event, ui) { 
-                $(this).remove();
-            });
-
-            $.mobile.changePage($(view.el), { transition: transition, changeHash: false });   
-            
-        } // end of changePage()
+        
     });
     
     return Router;
