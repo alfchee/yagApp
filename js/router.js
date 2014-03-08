@@ -7,8 +7,9 @@ define([
     'views/home/homeView',
     'views/establecimiento/EstablecimientoView',
     'views/nearme/NearMeView',
+    'views/search/SearchView',
     'collections/EstablecimientoCollection'
-], function($, _, Backbone, HeaderView, HomeView, EstablecimientoView, NearMeView, EstablecimientoCollection) {
+], function($, _, Backbone, HeaderView, HomeView, EstablecimientoView, NearMeView, SearchView, EstablecimientoCollection) {
     'use strict';
     var Router = Backbone.Router.extend({
 
@@ -22,6 +23,7 @@ define([
             '': 'showHome',
             'home': 'showHome',
             'nearMe' : 'nearMe',
+            'search' : 'search',
             '*actions': 'defaultAction'
         },
         defaultAction: function(actions) {
@@ -39,6 +41,10 @@ define([
         nearMe: function(actions) {
             var establecimientoView = new NearMeView();
             //establecimientoView.render();
+        },
+        search: function(actions) {
+            var searchView = new SearchView();
+            searchView.render();
         },
         init: true,
         

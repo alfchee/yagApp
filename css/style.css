@@ -26,3 +26,12 @@ figure {
 .list-body {
 	display: inline-block;
 }
+.navbar-header {
+    padding-left: 1.3em;
+}
+.navbar .navbar-form{
+    padding: 0 15px;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
