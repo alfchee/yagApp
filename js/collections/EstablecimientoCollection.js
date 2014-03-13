@@ -13,7 +13,7 @@ define([
         },
 
         url: function(coords) {
-            return  'http://localhost:3000/establecimientos';
+            return  'http://http://162.243.16.24:3001//establecimientos';
         },
 
         sync: function(method, collection, options) {

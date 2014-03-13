@@ -15,7 +15,7 @@ define([
             var self = this;
 
             this.collection = new EstablecimientoCollection();
-            this.collection.url = 'http://localhost:3000/establecimientos/search';
+            this.collection.url = 'http://162.243.16.24:3001/establecimientos/search';
 
             _.bindAll(this,'render');
             _.bindAll(this,'search');
