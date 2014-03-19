@@ -1,0 +1,28 @@
+<div id="login-template" class="container">
+    <div class="row clearfix" id="login-form-container">
+        <div class="col-xs-5 well well-lg text-center">
+            <h1>Login</h1>
+            <div class="heigh:50px;">
+                <ul id="login-errors" class="parsley-error-list"></ul>
+            </div>
+
+            <form id="login-form" class="form" data-validate="parsley">
+                <fieldset>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="text" id="login-username-input" name="username" placeholder="Username" value="<%= user.username || '' %>" data-required="true" data-noblank="true" />
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input class="input-medium" type="password" id="login-password-input" name="user_password" placeholder="Password" value="" data-required="true" data-noblank="true" data-rangelength="[5,25]" />
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <a href="#" id="login-btn" class="btn btn-primary btn-lg" data-bypass>Login</a>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,9 @@
 /*******************
     HTML Tags
 ********************/
+body {
+    padding-top: 50px;
+}       
 figure {
     margin: 0;
 }

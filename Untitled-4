@@ -1,0 +1,251 @@
+<div id="afui">
+        <div id="content" style="">
+            <!-- Page #1 Home -->
+            <div data-role="page" id="home" data-title="Home">
+                <!-- Page #2 Left Panel of Options -->
+                <div data-role="panel" id="config-1" data-positon="left" data-display="overlay">
+                    <!-- Header of Panel -->
+                    <div class="panel-content">
+                        <h4>Configuración</h4>
+                    </div>
+                    
+                </div>
+                <!-- End of Left Panel of Options  -->
+                <!-- Header -->
+                <div data-role="header" class="ui-header">
+                    <a href="#config-1" data-rel="dialog" data-icon="gear" data-iconpos="notext" class="ui-btn-left">Configuration</a>
+                    <h1></h1>
+                </div>
+                <div data-role="content" class="ui-content" id="home-content">
+                    <!-- The carousel  -->
+                    <figure>
+                        <img src="js/holder.js/284x200" alt="Carousel" height="200px" width="100%" />
+                    </figure>
+                    <!-- End of the Carousel  -->
+                    
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#close-to-me" data-icon="location">Cerca de mi</a></li>
+                            <li><a href="#list-places" data-icon="search">Buscar</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#" data-icon="plus">Emergencia</a></li>
+                            <li><a href="#" data-icon="info">Información Turística</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#" data-icon="bullets">Restaurantes</a></li>
+                            <li><a href="#" data-icon="bullets">Hoteles</a></li>
+                        </ul>
+                    </div>
+                    <div class="ui-grid-solo" id="accelerometer"></div>
+                    <div class="ui-grid-solo" id="position"></div>
+                </div>
+            </div>
+            <!-- End of Home  -->
+            
+            <!-- Page #3 List of Places -->
+            <div data-role="page" id="list-places" data-title="List of Places">
+                <!-- Header -->
+                <div data-role="header">
+                    <a href="#home" data-icon="carat-l" data-iconpos="notext" class="ui-btn-left">Back</a>
+                    <h1></h1>
+                </div>
+                <div data-role="content">
+                    <ul data-role="listview" class="ui-listview">
+                        <li class="ui-li-has-thumb">
+                            <a href="#show-place">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div data-role="footer">
+                
+                </div>
+            </div>
+            <!-- End of List of Places  -->
+            
+            <!-- Page #4 Close to Me -->
+            <div data-role="page" id="close-to-me" data-title="Close to me">
+                <!-- Header -->
+                <div data-role="header">
+                    <a href="#home" data-icon="carat-l" data-iconpos="notext" class="ui-btn-left">Back</a>
+                    <h1></h1>
+                </div>
+                <div data-role="content" id="closetome-content">
+                    <!-- The Map  -->
+                    <figure>
+                        <img src="js/holder.js/284x300" alt="Map" height="300px" width="100%" />
+                    </figure>
+                    <!-- End of the Map  -->
+                    <ul data-role="listview" class="ui-listview">
+                        <li class="ui-li-has-thumb">
+                            <a href="#show-place">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                        <li class="ui-li-has-thumb">
+                            <a href="#">
+                                <img src="js/holder.js/80x80" />
+                                <h3>Establecimiento #1</h3>
+                                <p>info</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div data-role="footer">
+                
+                </div>
+            </div>
+            <!-- End of Close to Me  -->
+            
+            <!-- Page #5 Show Place -->
+            <div data-role="page" id="show-place" data-title="Place">
+                <!-- Header -->
+                <div data-role="header">
+                    <a href="#home" data-icon="carat-l" data-iconpos="notext" class="ui-btn-left">Back</a>
+                    <h1>Establecimiento #1</h1>
+                </div>
+                <div data-role="content" id="showplace-content">
+                    <!-- The Map  -->
+                    <figure>
+                        <img src="js/holder.js/140x300" alt="Map" height="300px" width="49%" />
+                        <img src="js/holder.js/140x300" alt="Map" height="300px" width="49alf%" />
+                    </figure>
+                    <!-- End of the Map  -->
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#">Información</a></li>
+                            <li><a href="#">Servicios</a></li>
+                            <li><a href="#">Contactos</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Establecimiento #1</h2>
+                        <p>La demás info va aquí</p>
+                    </div>
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#">Califica / Comparte</a></li>
+                            <li><a href="#">Sube tus fotos</a></li>
+                        </ul>
+                    </div>
+                    <div class="ui-grid-solo">
+                        <ul data-role="listview">
+                            <li>
+                                <h3>Título de Comentario</h3>
+                                <p class="ui-li-aside">01/14/2014</p>
+                                <p>Contenido del Comentario.</p>
+                            </li>
+                            <li>
+                                <h3>Título de Comentario</h3>
+                                <p class="ui-li-aside">01/14/2014</p>
+                                <p>Contenido del Comentario.</p>
+                            </li>
+                            <li>
+                                <h3>Título de Comentario</h3>
+                                <p class="ui-li-aside">01/14/2014</p>
+                                <p>Contenido del Comentario.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Show Place  -->
+        </div>
+    </div>
