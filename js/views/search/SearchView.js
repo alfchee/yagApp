@@ -48,22 +48,31 @@ define([
             },this);
 
             return this;
-        },
+        },//render()
+
         goBack: function(eventName) {
             window.history.back();
             $('#header-content').empty();
-        },
+        },//goBack()
+
         search: function() {
             var key = $('#searchText').val();
             console.log('search ' + key);
             this.collection.fetch({ reset: true, data: $.param({ q: key }) });
-        },
+        },//search()
+
         keypress: function(event) {
             if(event.keyCode == 13) {
                 event.preventDefault();
                 this.search();
             }
-        },
+        },//keypress()
+
+        close: function(){
+            this.unbind();
+            this.model.unbind("change", this.model);
+            this.remove();
+        }, // close()
     });
 
     return SearchView;

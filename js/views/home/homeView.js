@@ -81,6 +81,7 @@ define([
                     },
                     error: function(mod,res) {
                         if(DEBUG) console.log("ERROR",mod,res);
+                        app.session.clearSess();
                     }
                 });
             } else {
@@ -88,6 +89,11 @@ define([
                 if(DEBUG) console.log('Did not pass clientside validations');
             }
         }, //onLoginAttempt
+
+        close: function() {
+            this.off();
+            this.remove();
+        }, // close()
     }); 
     return HomeView; 
 });

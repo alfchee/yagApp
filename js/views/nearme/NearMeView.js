@@ -84,6 +84,12 @@ define([
             window.history.back(); // going back in history
             $('#header-content').empty(); // reset the header
         },//goBack()
+
+        close: function(){
+            this.remove();
+            this.unbind();
+            this.model.unbind("change", this.modelChanged);
+        }, // close()
     });
 
     return NearMeView;

@@ -22,6 +22,24 @@ define([
                 $('header-alert').hide();
             }, 7000);
         },//showAlert()
+
+        // to parse the profile
+        urlBase64Decode: function(str) {
+            var output = str.replace("-","+").replace("_","/");
+            switch(output.length % 4) {
+                case 0:
+                    break;
+                case 2:
+                    output += "==";
+                    break;
+                case 3:
+                    output += "=";
+                    break;
+                default:
+                    throw "Illegal base64url string!";
+            }
+            return window.atob(output);
+        },//urlBase64Decode()
     };
 
     $.ajaxSetup({ cache: false });  // force ajax call on all browsers
@@ -34,8 +52,8 @@ define([
         if(!options.crossDomain)
             options.crossDomain = true;
 
-        if(!options.xhrFields)
-            options.xhrFields = { withCredentials: true };
+        /*if(!options.xhrFields)
+            options.xhrFields = { withCredentials: true };*/
 
         return proxiedSync(method, model, options);
     };

@@ -46,22 +46,6 @@ define([
         document.addEventListener('deviceready',function() { console.log("deviceready trigged"); },false);
         console.log("DOM is ready");
 
-        $.ajax({
-            url: 'http://localhost:3000/csrf?callback=?',
-            async: false,
-            crossDomain: true,
-            //xhrFields: {    withCredentials: true   },
-            jsonpCallback : 'jsonCsrf',
-            contentType: 'application/json',
-            dataType: 'json',
-            success : function(json) {
-                console.log(json);
-                $('meta[name="csrf-token"]').attr('content',json.token);
-            },
-            error: function(e) {
-                console.log(e.message);
-            }
-        });
 
         //app.initialize();    
         // Just use GET and POST to support all browser

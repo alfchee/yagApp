@@ -14,7 +14,7 @@ define([
         // these will be overriden after the initial checkAuth
         defaults: {
             logged_in : false,
-            user_id : ''
+            token : ''
         },
 
         initialize: function() {
@@ -23,11 +23,55 @@ define([
             // singleton user object
             // access  or listen on this throghout any module with app.session.user
             this.user = new UserModel({ });
+
+            // check for sessionStorage support
+            if(Storage && sessionStorage)
+                this.supportStorage = true;
         },
 
         url: function() {
-            return app.API + '/auth';
+            return app.URL + '/authenticate';
         },//url()
+
+        getSess: function(key) {
+            if(this.supportStorage) {
+                var data = sessionStorage.getItem(key);
+                if(data && data[0] === '{') {
+                    return JSON.parse(data);
+                } else {
+                    return data;
+                }
+            } else {
+                return Backbone.Model.prototype.get.call(this,key);
+            }
+        },//get()
+
+        setSess: function(key,value) {
+            if(this.supportStorage) {
+                sessionStorage.setItem(key,value);
+            } else {
+                Backbone.Model.prototype.set.call(this,key,value);
+            }
+
+            return this;
+        }, //set()
+
+        unsetSess: function(key) {
+            if(this.supportStorage) {
+                sessionStorage.removeItem(key);
+            } else {
+                Backbone.Model.prototype.unset.call(this,key);
+            }
+            return this;
+        },//unset()
+
+        clearSess: function() {
+            if(this.supportStorage){
+                sessionStorage.clear();    
+            } else {
+                Backbone.Model.prototype.clear(this);
+            }
+        },//clear()
 
         // function to update the user attributes after receiving the API response
         updateSessionUser: function(userData) {
@@ -72,20 +116,45 @@ define([
             if(DEBUG) console.log(postData);
             console.log(this.url());
             var meth = opts.method;
+            
             $.ajax({
-                url: this.url() + '/' + meth,
+                url: this.url() ,
                 dataType: 'json',
                 crossDomain: true,
                 type: 'POST',
-                beforeSend: function(xhr) {
-                    // set the CSRF token int the header for security
-                    var token = $('meta[name="csrf-token"]').attr('content');
-                    if(token) xhr.setRequestHeader('X-CSRF-Token',token);
-                    console.log(this.type);
-                },
                 data: postData,
+                beforeSend: function(xhr) {
+                    if(self.get('logged_in')) {
+                        xhr.setRequestHeader('Autorization','Bearer ' + self.getSess('token'));
+                    }
+                },//beforeSend()
                 success: function(res) {
                     console.log(res);
+                    if(!res.error) {
+                        if(_.indexOf(['login','signup'],meth) !== -1) {
+                            // if login or signup
+                            var token = res.token,
+                                encoded = token.split('.')[1],
+                                profile = app.urlBase64Decode(encoded);
+
+                            self.setSess('token',token);
+                            self.setSess('user',profile);
+                            self.updateSessionUser(JSON.parse(profile) || { });
+                            self.set({ logged_in: true });    
+                        } else {
+                            // if logout
+                            this.clearSess();
+                            self.clear();
+                            self.set({ logged_in: false });
+                        }
+
+                        if(callback && 'success' in callback) callback.success(res);
+                    } else {
+                        if(callback && 'error' in callback) callback.error(res);
+                    }
+                },
+                error: function(mod,res) {
+                    if(callback && 'error' in callback) callback.error(res);
                 }
             }).complete(function() {
                 if(callback && 'complete' in callback) callback.complete(res);
@@ -132,7 +201,11 @@ define([
         },//login()
 
         logout: function(opts, callback, args) {
-            this.postAuth(_.extend(opts,{ method: 'logout'}), callback);
+            //this.postAuth(_.extend(opts,{ method: 'logout'}), callback);
+            this.updateSessionUser({ });
+            this.clearSess();
+            this.clear();
+            this.set({ logged_in: false });
         },//logout()
 
         signup: function(opts, callback, args) {

@@ -50,7 +50,7 @@ require(['app'], function(app) {
 
         supportLocalStorage: function() {
             return ('localStorage' in window) && window.localStorage !== null;
-        },
+        },//supportLocalStorage()
 
         getQueryParam: function(name, queryStr) {
             name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -61,7 +61,25 @@ require(['app'], function(app) {
                 return "";
             else
                 return decodeURIComponent(results[1].replace(/\+/g, " "));
-        },
+        },//getQueryParam()
+
+        // to parse the profile
+        urlBase64Decode: function(str) {
+            var output = str.replace("-","+").replace("_","/");
+            switch(output.length % 4) {
+                case 0:
+                    break;
+                case 2:
+                    output += "==";
+                    break;
+                case 3:
+                    output += "=";
+                    break;
+                default:
+                    throw "Illegal base64url string!";
+            }
+            return window.atob(output);
+        },//urlBase64Decode()
 
         /**
         * COOKIE HELPERs
@@ -80,13 +98,13 @@ require(['app'], function(app) {
                 }
             }
             return null;
-        },
+        },//readCookie()
 
         eraseCookie: function(name,domain) {
             // set the epoch in the past  for deletion
             //console.log("Removing cookie:: "+ name+"=;path=/"+( (domain) ?";domain="+domain : "" )+";expires=Thu, 01 Jan 1970 00:00:01 GMT");
             document.cookie = name + '=;path=/' + ( (domain) ? ";domain=" + domain : "" ) + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
-        },
+        },//eraseCookie()
 
         createCookie: function(name,value,days) {
             var expires;
