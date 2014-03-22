@@ -49,7 +49,7 @@ define([
 
         //app.initialize();    
         // Just use GET and POST to support all browser
-        Backbone.emulateHTTP = true;
+        //Backbone.emulateHTTP = true;
 
         // Create a new session model and scape it to the app global
         // this will be a singleton, which other modules can access
@@ -57,28 +57,50 @@ define([
 
         app.router = new Router();
 
+
+        $.ajaxSetup({ 
+            cache: false,
+            statusCode: {
+                401: function() {
+                    app.session.logout();
+                }
+            },
+
+        });  // force ajax call on all browsers
+
         // check the auth status upon initialization,
         // before rendering anything or matchin routes
-        //app.session.checkAuth({
 
-            // start the Backbone routing once we have captured a user's auth status
-            //complete: function() {
+        Backbone.history.start();
 
-                // HTML5 pushState for URLs withouth hasbangs
-                var hasPushstate = !!(window.history && history.pushState);
-                if(hasPushstate) Backbone.history.start({ pushState: true, root: '/' });
-                else Backbone.history.start();
-            //}
-        //});
+        app.session.checkAuth();
 
-        // All navigation that is relative shoul be passed through the navigate 
-        // method, to be processed by the router. If the link has a 'data-bypass'
-        // attribute, bypass the delegation completly
-        $('#content').on('click',"a:not([data-bypass])", function(e) {
-            e.preventDefault();
-            var href = $(this).attr('href');
-            app.router.navigate(href,{ trigger: true, replace: false });
-        });
+        // store the original Backbone.sync to call it again from the one we make
+        var proxiedSync = Backbone.sync;
+
+        Backbone.sync = function(method, model, options) {
+            options || (options = {});
+
+            // make the consults by means CORS
+            if(!options.crossDomain)
+                options.crossDomain = true;
+
+            if(app.session.get('logged_in')) {
+                // change the headers options
+                options.headers = {
+                    'Authorization' : 'Bearer ' + app.session.getSess('token'),
+                };
+            }
+
+            options.statusCode = {
+                401: function() {
+                    app.session.logout();
+                }
+            };
+
+            return proxiedSync(method, model, options);
+        };//Backbone.sync()
+
     });
 
 });

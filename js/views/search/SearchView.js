@@ -1,12 +1,11 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
+    'app',
+
     'collections/EstablecimientoCollection',
     'views/establecimiento/EStablecimientoListItemView',
     'text!templates/header/searchHeaderTemplate.html',
     'text!templates/search/searchTemplate.html'
-], function($, _, Backbone, EstablecimientoCollection, EstablecimientoListItemView, searchHeaderTemplate, searchTemplate) {
+], function(app, EstablecimientoCollection, EstablecimientoListItemView, searchHeaderTemplate, searchTemplate) {
     'use strict';
 
     var SearchView = Backbone.View.extend({
@@ -15,7 +14,7 @@ define([
             var self = this;
 
             this.collection = new EstablecimientoCollection();
-            this.collection.url = 'http://162.243.16.24:3001/establecimientos/search';
+            this.collection.url = app.API + '/establecimientos/search';
 
             _.bindAll(this,'render');
             _.bindAll(this,'search');

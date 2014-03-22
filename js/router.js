@@ -43,14 +43,6 @@ define([
             else {
                 this.show( new HomeView({}) );
             }
-
-            /*if(!this.homeView) {
-                this.homeView = new HomeView();
-                this.homeView.render();
-            } else {
-                this.homeView.delegateEvents(); // delegate events when is recycled
-            }
-            $('#content').html(this.homeView.el);*/
         },
         nearMe: function(actions) {
             var establecimientoView = new NearMeView();
@@ -77,23 +69,8 @@ define([
             // Establish the requested view into scope
             this.currentView = view;
 
-            // need to be authenticated before rendering the view
-            // for cases like a user's settings page where needed to double check against the server
-            if(typeof options !== 'undefined' && options.requiresAuth) {
-                var self = this;
-                app.session.checkAuth({
-                    success: function(res) {
-                        // if auth succcessfull, render inside the page wrapper
-                        $('#content').html(self.currentView.render().$el);
-                    },
-                    error: function(res) {
-                        self.navigate('/',{ trigger: true, replace: true });
-                    }
-                });
-            } else {
-                // render inside the page wrapper
-                $('#content').html(this.currentView.render().$el);
-            }
+            
+            $('#content').html(this.currentView.render().$el);
         },
         
     });

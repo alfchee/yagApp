@@ -18,7 +18,7 @@ define([
         },
 
         initialize: function() {
-            _.bindAll(this,'updateSessionUser','checkAuth','postAuth','login','logout','signup','removeAccount');
+            _.bindAll(this,'updateSessionUser','checkAuth','postAuth','login','logout','signup','removeAccount','loginSuccess');
 
             // singleton user object
             // access  or listen on this throghout any module with app.session.user
@@ -83,9 +83,9 @@ define([
         *   The API will parse client cookies usin secret token
         *   and return a user object authenticated
         */
-        checkAuth: function(callback, args) {
+        checkAuth: function() {
             var self = this;
-            this.fetch({
+            /*this.fetch({
                 success: function(mod,res) {
                     if(!res.error && res.user) {
                         self.updateSessionUser(res.user);
@@ -102,7 +102,22 @@ define([
                 }
             }).complete(function() {
                 if('complete' in callback) callback.complete();
+            });*/
+            var data = { token: self.getSess('token') };
+            var query = $.ajax({
+                url: app.URL + '/refresh-token',
+                type: 'POST',
+                crossDomain: true,
+                data: data,
+                dataType: 'json',
             });
+
+            query.done(function(response){
+                self.loginSuccess(response);
+            });
+            query.fail(function(jqXHR, textStatus) {
+                console.log(textStatus);
+            })
         },//checkAuth()
 
         /*
@@ -125,7 +140,7 @@ define([
                 data: postData,
                 beforeSend: function(xhr) {
                     if(self.get('logged_in')) {
-                        xhr.setRequestHeader('Autorization','Bearer ' + self.getSess('token'));
+                        xhr.setRequestHeader('Authorization','Bearer ' + self.getSess('token'));
                     }
                 },//beforeSend()
                 success: function(res) {
@@ -133,14 +148,7 @@ define([
                     if(!res.error) {
                         if(_.indexOf(['login','signup'],meth) !== -1) {
                             // if login or signup
-                            var token = res.token,
-                                encoded = token.split('.')[1],
-                                profile = app.urlBase64Decode(encoded);
-
-                            self.setSess('token',token);
-                            self.setSess('user',profile);
-                            self.updateSessionUser(JSON.parse(profile) || { });
-                            self.set({ logged_in: true });    
+                               self.loginSuccess(res);
                         } else {
                             // if logout
                             this.clearSess();
@@ -195,6 +203,17 @@ define([
                 if(callback && 'complete' in callback) callback.complete(res);
             });*/
         },//postAuth()
+
+        loginSuccess: function(res) {
+            var token = res.token,
+                encoded = token.split('.')[1],
+                profile = app.urlBase64Decode(encoded);
+
+            this.setSess('token',token);
+            this.setSess('user',profile);
+            this.updateSessionUser(JSON.parse(profile) || { });
+            this.set({ logged_in: true });
+        },//loginSuccess()
 
         login: function(opts, callback, args) {
             this.postAuth(_.extend(opts,{ method: 'login' }), callback);

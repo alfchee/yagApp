@@ -1,8 +1,7 @@
 define([
-    'underscore',
-    'backbone',
+    'app',
     'models/EstablecimientoModel'
-],function(_, Backbone, EstablecimientoModel) {
+],function(app, EstablecimientoModel) {
     'use strict';
 
     var EstablecimientoCollection = Backbone.Collection.extend({
@@ -13,11 +12,15 @@ define([
         },
 
         url: function(coords) {
-            return  'http://http://162.243.16.24:3001//establecimientos';
+            return  app.API + '/establecimientos';
         },
 
         sync: function(method, collection, options) {
-            options.dataType = 'jsonp';
+            options || (options = {});
+
+            options.crossDomain = true;
+            options.headers = { 'Authorization' : 'Bearer ' + app.session.getSess('token') };
+
             return Backbone.sync(method, collection, options);
         },
 

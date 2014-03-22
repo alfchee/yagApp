@@ -1,13 +1,13 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
+    'app',
+
     'views/establecimiento/EstablecimientoListItemView',
     'collections/EstablecimientoCollection',
     'text!templates/nearme/nearmeTemplate.html',
     'text!templates/header/nearmeHeaderTemplate.html'
-], function($, _, Backbone, EstablecimientoListItemView, EstablecimientoCollection, nearmeTemplate, headerTemplate) {
+], function(app, EstablecimientoListItemView, EstablecimientoCollection, nearmeTemplate, headerTemplate) {
     'use strict';
+
 
     var NearMeView = Backbone.View.extend({
         initialize: function() {
@@ -16,9 +16,10 @@ define([
             // Initialize the collection to show in this view
             this.collection = new EstablecimientoCollection();
             // set the url for the retrieve of the information
-            this.collection.url = 'http://localhost:3000/establecimientos/near/';
+            this.collection.url = app.API + '/establecimientos/near/';
 
             var self = this;
+
 
             // asking for the current position to the device
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -87,8 +88,7 @@ define([
 
         close: function(){
             this.remove();
-            this.unbind();
-            this.model.unbind("change", this.modelChanged);
+            this.off();
         }, // close()
     });
 

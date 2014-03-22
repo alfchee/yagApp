@@ -4,7 +4,7 @@ define([
     'underscore',
     'backbone',
     'utils'
-], function($, _, Backbone) {
+], function($, _, Backbone, Utils) {
     'use strict';
     
     var app = {
@@ -40,22 +40,6 @@ define([
             }
             return window.atob(output);
         },//urlBase64Decode()
-    };
-
-    $.ajaxSetup({ cache: false });  // force ajax call on all browsers
-
-    var proxiedSync = Backbone.sync;
-
-    Backbone.sync = function(method, model, options) {
-        options || (options = {});
-
-        if(!options.crossDomain)
-            options.crossDomain = true;
-
-        /*if(!options.xhrFields)
-            options.xhrFields = { withCredentials: true };*/
-
-        return proxiedSync(method, model, options);
     };
 
     //global event aggregator 
