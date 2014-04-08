@@ -58,7 +58,7 @@ define([
             _.each(this.collection.models,function(establecimiento) {
                 var itemView = new EstablecimientoListItemView({ model: establecimiento });
 
-                $('.list-group').append(itemView.render().el);
+                $('#list').append(itemView.render().el);
             },this);
 
             return this;

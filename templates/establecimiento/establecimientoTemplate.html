@@ -1,4 +1,54 @@
 
-<div class="list-group">
-    
+<div id="est-content" class="container">
+    <figure class="row">
+        <div is="est-map1" width="100%" height="100%"></div>
+        <img src="#" class="img-responsive" id="est-map" />
+        <img src="http://placehold.it/1024x600" alt="MAP" class="img-responsive" />
+    </figure>
+    <div id="est-details" class="row">
+        <div class="btn-group btn-group-lg btn-group-justified">
+            <a class="btn btn-default" href="#info">Información</a>
+            <a class="btn btn-default" href="#servicios">Servicios</a>
+            <a class="btn btn-default" href="#contacto">Contacto</a>
+        </div>
+
+        <div class="panel panel-default" id="info">
+            <div class="col-xs-4" id="ranking">
+                <p>RANKING</p>
+            </div>
+            <div class="col-xs-6">
+                <h4><%= obj.nombre %></h4>
+                <p><%= obj.direccion %></p>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-star"></span> Favoritos</button>
+                <button type="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-share-alt"></span> LLévame</button>
+            </div>
+        </div>
+
+        <div class="panel-default" id="servicios"></div>
+        <div class="panel-default" id="contacto"></div>
+
+    </div>
+    <div class="row">
+        <div class="btn-group btn-group-lg btn-group-justified">
+            <a class="btn btn-default" href="#" id="comment"><span class="glyphicon glyphicon-comment"></span> Comentarios</a>
+            <a class="btn btn-default" href="#" id="take-pic"><span class="glyphicon glyphicon-camera"></span> Subir Fotos</a>
+        </div>
+    </div>
+    <div id="coments" class="panel">
+        <div class="panel-heading">
+            <h4>Comentarios</h4>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p>Comentario #1</p>
+                </li>
+                <li class="list-group-item">
+                    <p>Comentario #2</p>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>

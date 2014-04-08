@@ -29,12 +29,13 @@ define([
             'home': 'showHome',
             'nearMe' : 'nearMe',
             'search' : 'search',
+            'est/:id' : 'estDetails',
             '*actions': 'defaultAction'
         },
 
         defaultAction: function(actions) {
             this.showHome();  
-        },
+        },//defaultAction()
 
         showHome: function(actions) {
             //fix for non-pushState routing (IE9 and bellow)
@@ -43,15 +44,21 @@ define([
             else {
                 this.show( new HomeView({}) );
             }
-        },
+        },//showHome()
+
         nearMe: function(actions) {
             var establecimientoView = new NearMeView();
             //establecimientoView.render();
-        },
+        },//nearMe()
+
         search: function(actions) {
             var searchView = new SearchView();
             searchView.render();
-        },
+        },//search()
+
+        estDetails: function(id) {
+            var estDetails = new EstablecimientoView({ estId: id });
+        },//estDetails()
         //init: true,
 
         show: function(view, options) {
@@ -71,7 +78,7 @@ define([
 
             
             $('#content').html(this.currentView.render().$el);
-        },
+        },//show()
         
     });
     

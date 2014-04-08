@@ -2,7 +2,7 @@ define([
     'app',
 
     'collections/EstablecimientoCollection',
-    'views/establecimiento/EStablecimientoListItemView',
+    'views/establecimiento/EstablecimientoListItemView',
     'text!templates/header/searchHeaderTemplate.html',
     'text!templates/search/searchTemplate.html'
 ], function(app, EstablecimientoCollection, EstablecimientoListItemView, searchHeaderTemplate, searchTemplate) {
@@ -43,7 +43,7 @@ define([
             _.each(this.collection.models, function(establecimiento) {
                 var itemView = new EstablecimientoListItemView({ model: establecimiento });
 
-                $('.list-group').append(itemView.render().el);
+                $('#list').append(itemView.render().el);
             },this);
 
             return this;

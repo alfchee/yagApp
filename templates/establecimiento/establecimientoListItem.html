@@ -1,8 +1,10 @@
 
-<a href="#est/<%= obj._id %>">
-    <img class="img-list-item" src="http://placehold.it/80x80" alt="Foto" class="img-responsive" />
-    <div class="list-body">
-    	<h4 class="list-group-item-heading"><%= obj.nombre %></h4>
-    	<p class="list-group-item-text"><%= obj.direccion %></p>
+<div class="media">
+	<a class="pull-left" href="#est/<%= obj._id %>">
+        <img class="img-list-item" src="http://placehold.it/80x80" alt="Foto" class="img-responsive" />
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading"><a href="#est/<%= obj._id %>"><%= obj.nombre %></a></h4>
+        <p><%= obj.direccion %></p>
     </div>
-</a>
+</div>

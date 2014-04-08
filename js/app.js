@@ -9,8 +9,10 @@ define([
     
     var app = {
         root : '/',         // the root path to run the application trought
-        URL : 'http://localhost:3000',          // Base application URL
-        API : 'http://localhost:3000/api',       // Base API URL (used by models and collections)
+        //URL : 'http://localhost:3000',          // Base application URL
+        //API : 'http://localhost:3000/api',       // Base API URL (used by models and collections)
+        URL : 'http://162.243.16.24:3001',
+        API : 'http://162.243.16.24:3001/api',
 
         // show alert classes and hide after a specified timeout
         showAlert: function(title, text, klass) {

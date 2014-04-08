@@ -25,7 +25,7 @@ define([
         },
 
         parse: function(response) {
-            console.log('Parsing ' + JSON.stringify(response) + ' data');
+            //console.log('Parsing ' + JSON.stringify(response) + ' data');
             return response;
         }
     });
