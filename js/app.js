@@ -3,8 +3,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'utils'
-], function($, _, Backbone, Utils) {
+    'utils',
+    'bootstrap'
+], function($, _, Backbone, Utils, bootstrap) {
     'use strict';
     
     var app = {

@@ -32,7 +32,48 @@
     </div>
     <div class="row">
         <div class="btn-group btn-group-lg btn-group-justified">
-            <a class="btn btn-default" href="#" id="comment"><span class="glyphicon glyphicon-comment"></span> Comentarios</a>
+            <a class="btn btn-default" href="#" id="comment" data-toggle="modal" data-target="#myComment"><span class="glyphicon glyphicon-comment"></span> Comentarios</a>
+            <!-- Modal -->
+            <div class="modal fade" id="myComment" tabindex="-1" role="dialog" aria-labelledby="myCommentLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myCommentLabel">Danos tu opinión</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form id="CommentForm">
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input type="text" name="title" class="form-control" id="title" placeholder="Título" />
+                        </div>
+                        <div class="form-group">
+                            <span class="rating">
+                                <input type="radio" class="rating-input" id="rating-1-5" name="rating" value="5">
+                                <label for="rating-1-5" class="rating-star"></label>
+                                <input type="radio" class="rating-input" id="rating-1-4" name="rating" value="4">
+                                <label for="rating-1-4" class="rating-star"></label>
+                                <input type="radio" class="rating-input" id="rating-1-3" name="rating" value="3">
+                                <label for="rating-1-3" class="rating-star"></label>
+                                <input type="radio" class="rating-input" id="rating-1-2" name="rating" value="2">
+                                <label for="rating-1-2" class="rating-star"></label>
+                                <input type="radio" class="rating-input" id="rating-1-1" name="rating" value="1">
+                                <label for="rating-1-1" class="rating-star"></label>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="opinion">Tu opinión</label>
+                            <textarea class="form-control" rows="4" name="comment" id="comment">Yo opino...</textarea>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="send-opinion">Enviar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <a class="btn btn-default" href="#" id="take-pic"><span class="glyphicon glyphicon-camera"></span> Subir Fotos</a>
         </div>
     </div>
@@ -41,14 +82,9 @@
             <h4>Comentarios</h4>
         </div>
         <div class="panel-body">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <p>Comentario #1</p>
-                </li>
-                <li class="list-group-item">
-                    <p>Comentario #2</p>
-                </li>
-            </ul>
+            <div id="comments-list">
+
+            </div>
         </div>
     </div>
 </div>

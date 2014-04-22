@@ -14,6 +14,7 @@ require.config({
         backbone : "vendor/backbone/backbone",
         text: "vendor/require/text",
         parsley: "vendor/parsley/parsley",
+        bootstrap: "vendor/bootstrap/bootstrap",
         templates: '../templates',
         model: 'models'
     },
@@ -26,6 +27,7 @@ require.config({
             "deps" : ["underscore","jquery"],
             "exports": "Backbone" // attaches backbone to the window object
         },
+        bootstrap: { "deps" : ["jquery"] },
         parsley : {
             "deps" : ["jquery"]
         }
