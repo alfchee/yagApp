@@ -19,7 +19,7 @@ define([
             this.model.url = app.API + '/establecimientos/' + options.estId;
 
             // to bind "this" inside this methods
-            _.bindAll(this,"render","takePicture","upload","sendComment","renderComments");
+            _.bindAll(this,"render","takePicture","uploadPicture","sendComment","renderComments","showPicture");
 
             // to listen events for this objects
             this.listenTo(self.model, "reset", self.render);
@@ -33,13 +33,15 @@ define([
         },
         
         el: '#content',
+        imageURI : null,
         
         template: _.template(establecimientoTemplate),
 
         // events handlers
         events: {
             'click #take-pic' : 'takePicture',
-            'click #send-opinion' : 'sendComment'
+            'click #send-opinion' : 'sendComment',
+            'click #send-pic' : 'uploadPicture'
         },
 
         render: function(eventName) {
@@ -56,6 +58,8 @@ define([
             var map = new google.maps.Map($('#est-map')[0],
                             mapOptions);
 
+            $('#send-pic').on('click',self.uploadPicture());
+
             //$('#content').html($(this.el));
             // showing a message if there is no comments
             if(this.commentCollection.length < 1) {
@@ -68,10 +72,11 @@ define([
         },//render()
 
         renderComments: function(e) {
+            $('#comments-list').empty();
             // rendering the comments for each one in the collection
             _.each(this.commentCollection.models, function(comentario) {
                 var commentView = new ComentarioListItemView({ model: comentario });
-                $('#comments-list').html(commentView.render().el);
+                $('#comments-list').append(commentView.render().el);
             }, this);
         },//renderComments()
 
@@ -92,7 +97,7 @@ define([
 
             query.done(function(response) {
                 alert('Enviado ;)');
-                self.clearForm();
+                self.clearCommentForm();
                 $('#myComment').modal('hide');
 
                 self.commentCollection.fetch({ reset: true });
@@ -105,14 +110,21 @@ define([
         },//sendComment()
 
         // method to clear the form of the comments after this is sent
-        clearForm: function() {
+        clearCommentForm: function() {
             $('#CommentForm input').val('');
             $('#CommentForm input[type=radio]').attr('checked',false);
             $('#CommentForm textarea').val('Yo opino...');
         },//clearForm()
 
+        clearPictureForm: function() {
+            $('#picture').attr('src','#');
+            $('#pic-title').val('');
+            $('#pic-pie').val('');
+        },//clearPictureForm()
+
         takePicture: function(e) {
             e.preventDefault();
+
             var options = {
                 quality: 75,
                 targetWidth: 1000,
@@ -127,10 +139,9 @@ define([
 
             navigator.camera.getPicture(function(imageURI) {
                 console.log(imageURI);
-                self.upload(imageURI);
-                var image = document.getElementById('est-map');
-                //image.src = "data:image/jpeg;base64," + imageURI;
-                image.src = imageURI;
+                self.imageURI = imageURI;
+                self.clearPictureForm();
+                self.showPicture();
             }, function(message) {
                 // case of fail
                 alert('Failed because: ' + message);
@@ -139,24 +150,36 @@ define([
             return false;
         },//takePicture()
 
-        upload: function(imageURI) {
+        showPicture: function() {
+            $('#picture').attr('src',this.imageURI);
+            $('#myPicture').modal('show');
+        },//showPicture()
+
+        uploadPicture: function() {
             var ft = new FileTransfer(),
-                options = new FileUploadOptions();
+                options = new FileUploadOptions(),
+                self = this;
 
             options.fileKey = "file"; // this is the name that appears in req.files
             options.fileName = "filename.jpg";
-            options.mimeType = "image/jpeg";
+            options.mimeType = "multipart/form-data";
             options.chunkedMode = false;
             options.params = { // in nodejs this can be retreived in req.body
-                "description": "uploaded from my phone",
                 "user" : app.session.user.attributes.username,
-                "est" : this.model.attributes._id
+                "est" : this.model.attributes._id,
+                "title" : $('#pic-title').val(),
+                "pie" : $('#pic-pie').val(),
             };
-            options.headers = { 'Authorization': 'Bearer ' + app.session.getSess('token') };
+            alert(JSON.stringify(options.params));
+            //options.headers = { 'Authorization': 'Bearer ' + app.session.getSess('token') };
 
-            ft.upload(imageURI, 'http://192.168.0.27:3001' + '/establecimientos/upload-pic',
+            //ft.upload(self.imageURI, 'http://192.168.0.32:8000' + '/establecimientos/upload-pic',
+            ft.upload(self.imageURI, app.URL + '/establecimientos/upload-pic',
+            //ft.upload(self.imageURI, 'http://192.168.1.7' + '/server.php',
                 function(e) {
-                    alert("must refresh");
+                    console.log(JSON.stringify(e));
+                    $('#myPicture').modal('hide');
+                    self.clearPictureForm();
                 }, function(e) {
                     alert("upload failed : " + e.message);
                 }, options);
