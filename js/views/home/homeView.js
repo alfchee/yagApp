@@ -2,12 +2,14 @@
 define([
     'app',
 
+    'views/header/HeaderView',
+
     'text!templates/home/loginTemplate.html',
     'text!templates/home/homeTemplate.html',
 
     'parsley',
     'utils'
-], function(app, loginTemplate, homeTemplate){ 
+], function(app, HeaderView, loginTemplate, homeTemplate){ 
 
     var HomeView = Backbone.View.extend({ 
 
@@ -16,6 +18,7 @@ define([
             _.bindAll(this,'render','onPasswordKeyup','onLoginAttempt');
             navigator.geolocation.getCurrentPosition(this.geoSuccess,this.geoError);
 
+
             // listen for a session logged_in state changes an re-render
             this.listenTo(app.session,"change:logged_in", this.render);
         },
@@ -23,11 +26,12 @@ define([
         events: {
             'click #login-btn': 'onLoginAttempt',
             'click #login-password-input': 'onPasswordKeyup',
+            'click button.twitter': 'onTwitterLogin'
         },
 
         //initialize template 
         //template:_.template(homeTemplate), 
-        className: 'row',
+        //className: 'row',
 
         //render the content into div of view 
         render: function() { 
@@ -36,12 +40,23 @@ define([
             //append the compiled template into view div container 
             //$(this.el).html(homeTemplate);
 
-            if(app.session.get('logged_in')) this.template = _.template(homeTemplate);
-            else this.template = _.template(loginTemplate);
+            if(app.session.get('logged_in')) {
+               this.template = _.template(homeTemplate); 
+               //app.snapper.on('drag');
+            } else {
+                this.template = _.template(loginTemplate);
+                //app.snapper.off('drag');
+
+                
+
+            }
 
             $(this.el).html(this.template({
                 user: app.session.user.toJSON(),
             }));
+
+
+            app.router.headerView = new HeaderView();
 
             //return to enable chained calls 
             return this; 
@@ -88,7 +103,14 @@ define([
                 //invalid clientside validations thru parsley
                 if(DEBUG) console.log('Did not pass clientside validations');
             }
-        }, //onLoginAttempt
+        }, //onLoginAttempt()
+
+        onTwitterLogin: function(e) {
+            if(e) e.preventDefault();
+
+            console.log('Login using Twitter');
+            app.session.loginTwitter();
+        },//onTwitterLogin()
 
         close: function() {
             this.off();

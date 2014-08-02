@@ -19,8 +19,10 @@ define([
         initialize: function() {
             _.bindAll(this,'showHome','show');
 
-            this.headerView = new HeaderView();
-            $('.header').html(this.headerView.render().el);
+            app.snapper = new Snap({
+                element: document.getElementById('content'),
+                disable: 'right'
+            });
         }, // initialize()
 
         //definition of routes
@@ -65,10 +67,6 @@ define([
             //every page view in the router should need a header.
             // instead of creating a base parent view, just assign the view to this
             // so we can create it fi it doesn't exist
-            if(!this.headerView) {
-                this.headerView = new HeaderView({ });
-                // render the header
-            }
 
             // close and unbind any existing page view
             if(this.currentView) this.currentView.close();
@@ -78,6 +76,14 @@ define([
 
             
             $('#content').html(this.currentView.render().$el);
+
+            if(!this.headerView) {
+                this.headerView = new HeaderView({ });
+                // render the header
+                $('.header').html(this.headerView.render().el);
+            } else {
+                $('.header').html(this.headerView.render().el);
+            }
         },//show()
         
     });

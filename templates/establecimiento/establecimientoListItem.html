@@ -1,10 +1,19 @@
 
 <div class="media">
-	<a class="pull-left" href="#est/<%= obj._id %>">
-        <img class="img-list-item" src="http://placehold.it/80x80" alt="Foto" class="img-responsive" />
+    <a class="pull-left" href="#est/<%= obj._id %>">
+        <img class="img-list-item" src="<%= getImageThumbSrc(obj.profilePicture) %>" alt="Foto" class="img-responsive" width="80" height="80"/>
     </a>
     <div class="media-body">
         <h4 class="media-heading"><a href="#est/<%= obj._id %>"><%= obj.nombre %></a></h4>
-        <p><%= obj.direccion %></p>
+        <div class="rating">
+            <% _.each([5,4,3,2,1],function(n) { %>
+                <span class="rating-input <% if(obj.ranking == n) { print('rated'); } %>"></span>
+                <span class="ratingstar"></span>
+                <%  });
+            %>
+        </div> 
+        <p>      
+            <%= obj.direccion %>
+        </p>
     </div>
 </div>

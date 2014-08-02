@@ -2,7 +2,15 @@
 <div class="media">
     <div class="media-body">
         <h4 class="media-heading"><%= obj.titulo %></h4>
-        <p>Ranking: <%= obj.ranking %></p>
+        <p>
+            <div class="rating">
+                <% _.each([5,4,3,2,1],function(n) { %>
+                    <span class="rating-input <% if(obj.ranking == n) { print('rated'); } %>"></span>
+                    <span class="ratingstar"></span>
+                    <%  });
+                %>
+            </div>
+        </p>
         <p><%= obj.comentario %></p>
     </div>
 </div>

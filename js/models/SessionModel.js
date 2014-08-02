@@ -4,8 +4,10 @@
 define([
     'app',
     'models/UserModel',
-    'utils'
-],function(app, UserModel){
+    'models/TwitterModel',
+    'async',
+    'utils',
+],function(app, UserModel, TwitterModel, async){
     'use strict';
 
     var SessionModel = Backbone.Model.extend({
@@ -24,8 +26,8 @@ define([
             // access  or listen on this throghout any module with app.session.user
             this.user = new UserModel({ });
 
-            // check for sessionStorage support
-            if(Storage && sessionStorage)
+            // Changed for localStorage support
+            if(window.localStorage && localStorage)
                 this.supportStorage = true;
         },
 
@@ -35,7 +37,7 @@ define([
 
         getSess: function(key) {
             if(this.supportStorage) {
-                var data = sessionStorage.getItem(key);
+                var data = localStorage.getItem(key);
                 if(data && data[0] === '{') {
                     return JSON.parse(data);
                 } else {
@@ -48,7 +50,7 @@ define([
 
         setSess: function(key,value) {
             if(this.supportStorage) {
-                sessionStorage.setItem(key,value);
+                localStorage.setItem(key,value);
             } else {
                 Backbone.Model.prototype.set.call(this,key,value);
             }
@@ -58,7 +60,7 @@ define([
 
         unsetSess: function(key) {
             if(this.supportStorage) {
-                sessionStorage.removeItem(key);
+                localStorage.removeItem(key);
             } else {
                 Backbone.Model.prototype.unset.call(this,key);
             }
@@ -67,7 +69,7 @@ define([
 
         clearSess: function() {
             if(this.supportStorage){
-                sessionStorage.clear();    
+                localStorage.clear();    
             } else {
                 Backbone.Model.prototype.clear(this);
             }
@@ -85,24 +87,6 @@ define([
         */
         checkAuth: function() {
             var self = this;
-            /*this.fetch({
-                success: function(mod,res) {
-                    if(!res.error && res.user) {
-                        self.updateSessionUser(res.user);
-                        self.self({ logged_in: true });
-                        if('success' in callback) callback.success(mod, res);
-                    } else {
-                        self.set({ logged_in: false });
-                        if('error' in callback) callback.error(mod,res);
-                    }
-                }, 
-                error: function(mod, res) {
-                    self.set({ logged_in: false });
-                    if('error' in callback) callback.error(mod,res);
-                }
-            }).complete(function() {
-                if('complete' in callback) callback.complete();
-            });*/
             var data = { token: self.getSess('token') };
             var query = $.ajax({
                 url: app.URL + '/refresh-token',
@@ -167,57 +151,81 @@ define([
             }).complete(function() {
                 if(callback && 'complete' in callback) callback.complete(res);
             });
-
-            /*$.ajax({
-                url: this.url() + '/' +opts.method,
-                contentType: 'application/json',
-                dataType: 'json',
-                crossDomain: true,
-                xhrFields: {    withCredentials: true   },
-                type: 'POST',
-                beforeSend: function(xhr) {
-                    // set the CSRF token int the header for security
-                    var token = $('meta[name="csrf-token"]').attr('content');
-                    if(token) xhr.setRequestHeader('X-CSRF-Token',token);
-                    console.log(this.type);
-                },
-                data: JSON.stringify(_.omit(opts,'method')),
-                success: function(res) {
-                    if(!res.error) {
-                        if(_.indexOf(['login','signup'],opts.method) !== -1) {
-                            self.updateSessionUser(res.user || { });
-                            self.set({ user_id: res.user.id, logged_in: true });
-                        } else {
-                            self.set({ logged_in: false });
-                        }
-
-                        if(callback && 'success' in callback) callback.success(res);
-                    } else {
-                        if(callback && 'error' in callback) callback.error(res);
-                    }
-                },
-                error: function(mod, res) {
-                    if(callback && 'error' in callback) callback.error(res);
-                }
-            }).complete(function() {
-                if(callback && 'complete' in callback) callback.complete(res);
-            });*/
         },//postAuth()
 
         loginSuccess: function(res) {
-            var token = res.token,
-                encoded = token.split('.')[1],
-                profile = app.urlBase64Decode(encoded);
+            var token = res.token;
+            var encoded = token.split('.')[1];
+            var profile = app.urlBase64Decode(encoded);
+            var user = JSON.parse(profile);
 
             this.setSess('token',token);
             this.setSess('user',profile);
-            this.updateSessionUser(JSON.parse(profile) || { });
+            this.updateSessionUser(user || { });
             this.set({ logged_in: true });
+
+            if(user.twitterOauthToken) {
+                var twitter = TwitterModel();
+                this.setSess(twitter.twitterKey,JSON.stringify(user.twitterOauthToken));
+            }
         },//loginSuccess()
 
         login: function(opts, callback, args) {
             this.postAuth(_.extend(opts,{ method: 'login' }), callback);
         },//login()
+
+        loginTwitter: function() {
+            var self = this;
+            var twitter = new TwitterModel();
+            // proceed to authorize the application and register the user in the server
+            twitter.requestToken();
+
+            
+        },//loginTwitter()
+
+        verifyTwitterUser: function(twitter) {
+            var self = this;
+            
+            $.ajax({
+                url: app.URL + '/verify-twitter-user',
+                type: 'GET',
+                crossDomain: true,
+                data: { username: twitter.userData.screen_name }
+            }).done(function(data) {
+                // compare the username to see if the user is signed 
+                if(data.username && twitter.userData.screen_name == data.username) {
+                    // TODO: login
+                    $.ajax({
+                        url: self.url,
+                        type: 'POST',
+                        crossDomain: true,
+                        data: {
+                            username: twitter.userData.screen_name,
+                            auth_token: JSON.stringify(app.session.getSess(twitter.twitterKey))
+                        }
+                    }).done(function(res) {
+                        self.loginSuccess(res);
+                    });
+                } else {
+                    // sign up the user
+                    $.ajax({
+                        url: app.URL + '/twitter-signup',
+                        type: 'POST',
+                        crossDomain: true,
+                        data: {
+                            name: twitter.userData.name,
+                            screen_name : twitter.userData.screen_name,
+                            profile_image_url : twitter.userData.profile_image_url,
+                            lang : twitter.userData.lang,
+                            location : twitter.userData.location,
+                            auth_token : JSON.stringify(app.session.getSess(twitter.twitterKey))
+                        }
+                    }).done(function(res) {
+                        self.loginSuccess(res);
+                    });
+                }
+            });
+        },//verifyTwitterUser()
 
         logout: function(opts, callback, args) {
             //this.postAuth(_.extend(opts,{ method: 'logout'}), callback);

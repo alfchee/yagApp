@@ -28,7 +28,6 @@ define([
 
             // fetching the information for these object and collection
             this.model.fetch({ reset: true });
-            this.commentCollection.fetch({ reset: true });
 
         },
         
@@ -49,24 +48,31 @@ define([
 
             $(this.el).empty();
             $(this.el).html(this.template(this.model.toJSON() ));
-            
-            var mapOptions = {
-                center: new google.maps.LatLng(this.model.attributes.coordinates.y,this.model.attributes.coordinates.x),
-                zoom: 10
-            };
-              
-            var map = new google.maps.Map($('#est-map')[0],
-                            mapOptions);
 
-            $('#send-pic').on('click',self.uploadPicture());
+            this.commentCollection.fetch({ reset: true });
+
+            var url = GMaps.staticMapURL({
+                size: [640, 320],
+                scale: 2,
+                zoom : 17,
+                lat: this.model.attributes.coordinates.x,
+                lng: this.model.attributes.coordinates.y,
+                markers: [
+                  {lat: this.model.attributes.coordinates.x, lng: this.model.attributes.coordinates.y}
+                ]
+              });
+            
+            $('<img/>').attr('src', url)
+                        .attr('width','100%')
+                        .appendTo('#est-map');
+
+            //$('#send-pic').on('click',this.uploadPicture());
 
             //$('#content').html($(this.el));
             // showing a message if there is no comments
             if(this.commentCollection.length < 1) {
                 $('#comment-info').removeClass('hidden');
             }
-
-            
             
             return this;
         },//render()
@@ -124,6 +130,7 @@ define([
 
         takePicture: function(e) {
             e.preventDefault();
+            var self = this;
 
             var options = {
                 quality: 75,
@@ -135,11 +142,10 @@ define([
                 sourceType: Camera.PictureSourceType.CAMERA 
             };
 
-            var self = this;
-
             navigator.camera.getPicture(function(imageURI) {
                 console.log(imageURI);
                 self.imageURI = imageURI;
+                
                 self.clearPictureForm();
                 self.showPicture();
             }, function(message) {
@@ -151,6 +157,7 @@ define([
         },//takePicture()
 
         showPicture: function() {
+            alert(this.imageURI);
             $('#picture').attr('src',this.imageURI);
             $('#myPicture').modal('show');
         },//showPicture()
@@ -170,7 +177,7 @@ define([
                 "title" : $('#pic-title').val(),
                 "pie" : $('#pic-pie').val(),
             };
-            alert(JSON.stringify(options.params));
+            
             //options.headers = { 'Authorization': 'Bearer ' + app.session.getSess('token') };
 
             //ft.upload(self.imageURI, 'http://192.168.0.32:8000' + '/establecimientos/upload-pic',

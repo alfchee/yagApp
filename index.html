@@ -2,14 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     
     <title>YAG - Prototype</title>
-
-    <meta name="csrf-token" content="">
     
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="js/vendor/snapjs/snap.css">
     <link rel="stylesheet" href="css/style.css">
     
     <script type="text/javascript">
@@ -20,13 +22,26 @@
     
 </head>
 <body>
-    <div class="header"></div>
+    <div class="snap-drawers">
+        <div class="snap-drawer snap-drawer-left">
+            <div>
+                <h3></h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Favoritos</a></li>
+                    <li><a href="#">Configuración</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <section class="container" id="content">
+    <section class="snap-content" id="content">
     </section>
 
     <script src="cordova.js"></script>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA6ALD0IZKUrgtSgswquK0VzzEN_qltvVE&sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    
     <script src="js/vendor/require/require.js" data-main="js/main"></script>
 </body>
 </html>

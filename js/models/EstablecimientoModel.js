@@ -1,7 +1,6 @@
 define([
-    'underscore',
-    'backbone'
-], function(_, Backbone) {
+    'app'
+], function(app) {
     'use strict';
 
     var EstablecimientoModel = Backbone.Model.extend({
@@ -14,6 +13,12 @@ define([
             console.log('Parsing ' + JSON.stringify(response) + ' data');
             return response;
         }
+    });
+
+    _.addTemplateHelpers({
+        getImageThumbSrc: function(id) {
+            return app.IMG + 'establecimientos/thumb/' + id + '.jpeg';
+        },
     });
 
     return EstablecimientoModel;

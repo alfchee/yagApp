@@ -15,6 +15,11 @@ require.config({
         text: "vendor/require/text",
         parsley: "vendor/parsley/parsley",
         bootstrap: "vendor/bootstrap/bootstrap",
+        templateHelpers: "vendor/underscore/underscore.template-helpers",
+        gmaps : "vendor/hpneo/gmaps",
+        snapjs : "vendor/snapjs/snap",
+        jsoauth : "vendor/jsoauth/jsOAuth",
+        async : "vendor/async/async",
         templates: '../templates',
         model: 'models'
     },
@@ -30,7 +35,11 @@ require.config({
         bootstrap: { "deps" : ["jquery"] },
         parsley : {
             "deps" : ["jquery"]
-        }
+        },
+        templateHelpers : {
+            "deps" : ["underscore"]
+        },
+        jsoauth : { "deps" : ["templateHelpers"] }
     } // end of shim configuration
 });
 
@@ -60,6 +69,8 @@ define([
         app.router = new Router();
 
 
+        // if somewhere in the execution of the app we obtain an 401 error
+        // the app will to logout
         $.ajaxSetup({ 
             cache: false,
             statusCode: {
